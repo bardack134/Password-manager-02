@@ -23,93 +23,79 @@ SECRET_PASSWORD='mamaypapa'
 # ------------------------------CALL PASSWORD-----------------------------------------
 #TODO: LLAMAR O BUSCAR UNA PASSWORD ESPECIFICA DENTRO DE NUESTRO ARCHIVO .TXT file
 def search_password():  
-   
-    #llamamos al archivo que tiene guardada nuestras password
-    with open('data.txt', 'r') as file:
-        #retornamos todas las lineas en el archivo como una lista
-        file_as_a_list = file.readlines()
-        
-        
-        # Obtenemos la entrada del usuario y la convertimos a minúsculas
-        data_to_search = website_entry_2.get().lower()
-        
-        
-        # Inicializamos una variable para verificar si encontramos el elemento
-        element_found=False
-        
-        
-        #variable que se modificara si la contraseña　ingresada es correcta
-        secret_password_correct=False
-        
-        
-        for i in file_as_a_list:
-            # Si los datos a buscar están en la línea actual
-            if data_to_search   in i:
-                # Marcamos que encontramos el elemento
-                element_found=True
+    
+    #puede pasar que el archivo todavia no haya sido creado, por eso levantamos un 'try' y 'except'
+    try:
+        #llamamos al archivo que tiene guardada nuestras password
+        with open('data.json', 'r') as file:
+            
+            #guardamos los datos del archivo en una variable, se guardan tipo diccionario
+            data=json.load(file)
+            
+            
+            # # Obtenemos la entrada del usuario y la convertimos a minúsculas
+            data_to_search = website_entry_2.get().lower()
+                
+            
+            #puede pasar que el dato que buscamos no exista dentro de nuestros datos, por eso levantamos 'try' y 'except'
+            try:
+                
+                # #obtenemos el email 
+                my_email_data=data[data_to_search]['email']       
                 
                 
-                # Limpiamos la línea removiendo el caracter "|"
-                i_clean=i.replace("|","")
+                # #obtenemos la contrasena
+                my_password_data=data[data_to_search]['password']       
+            
+            
+            except KeyError:
+                
+                #mostramos al usuario un mensaje de error
+                messagebox.showinfo("showinfo", 'Element not found') 
                 
                 
-                # Convertimos la línea limpia en una lista
-                i_as_a_list=i_clean.split()
-                
-                
-                # Extraemos el nombre del sitio web, el correo electrónico y la contraseña
-                # website_name=i_as_a_list[0]
-                email_name=i_as_a_list[1]
-                password_name=i_as_a_list[2]
-                
-                
-                #TODO: DESCIFRAREMOS LA CONTRASEÑA GUARDADA EN 'data.txt'   
-                # Número de posiciones que se desplaza las letras y asignar su respuesta a una variable llamada shift.  
+            else:          
+                # #TODO: DESCIFRAREMOS LA CONTRASEÑA GUARDADA EN 'data.json'   
+                #  Número de posiciones que se desplaza las letras y asignar su respuesta a una variable llamada shift.  
                 shift = SHIFT
-                #modificamos el 'SHIFT' para que no importa el numero que se escoja pueda correr y no muestre error "item out of   Range" 
-                # porque da un valor posicional de la lista mayor a la cantidad de items en nuestra lista 
+                # modificamos el 'SHIFT' para que no importa el numero que se escoja pueda correr y no muestre error "item out of   Range" 
+                # #orque da un valor posicional de la lista mayor a la cantidad de items en nuestra lista 
                 shift = shift % 27   
-                
-                
-                #guardamos la password en una variable llamada text, que recibe nuestra funcion decrypt 
-                text=password_name
-                
-                
-                #Llamamos a la funcion que decifra o descodifica nuestra password y la guardamos en una variable
-                password_name_decrypted=decrypt(text, shift)
-                
-                
-                #secret password para mostrar las contrasenas guardadas
+                    
+            
+                # #guardamos la password en una variable llamada text, que recibe nuestra funcion decrypt 
+                text=my_password_data
+            
+            
+                # #Llamamos a la funcion que decifra o descodifica nuestra password y la guardamos en una variable
+                password_decrypted=decrypt(text, shift)
+            
+            
+                # secret password para mostrar las contrasenas guardadas
                 ask_secret_password=askstring(title='secret password', prompt='Introduce the secret password', show="*")
-                
-                
+            
+            
+                #evaluamos si la contrasena secreta o maestra ingresada por el user es correcta o no 
                 if ask_secret_password==SECRET_PASSWORD:
                 
                     #insertamos la informacion encontrada en los entry para que el usuario la pueda ver
-                    # website_entry_2.insert(0, website_name)
-                    email_entry_2.insert(0, email_name)
-                    password_entry_2.insert(0, password_name_decrypted)
-            
+                    email_entry_2.insert(0, my_email_data)
                     
-                    #poniendo True indicamos que la contrasena fue correcta
-                    secret_password_correct=True
-                
-                
-                #si la contrasena secreta no fue correcta
-                else:    
+                    
+                    password_entry_2.insert(0, password_decrypted)
+
+
+                else:
+                    
                     messagebox.showerror(title='opps', message="Your secret password is incorrect")
                     
-        # Si no encontramos el elemento, mostramos un mensaje indicando que no se encontró   
-        if element_found==False: 
-           messagebox.showinfo("showinfo", 'Element not found') 
-           
-           
-        # #si la contrasena secreta no fue correcta se mostrara este mensaje, sin mostrar el msj de 'element no found'     
-        # elif element_found==False and secret_password_correct==False:
-        #     messagebox.showerror(title='opps', message="Your secret password is incorrect")
-            
-            
+                    
+    except FileNotFoundError:
         
+        messagebox.showerror(title='opps', message="There are no data saved yet")
+       
+             
+            
          
                   
             
@@ -207,7 +193,7 @@ def save_data():
             
             
             #si el archivo no se encuentra, levantamos una excepcion y creamos el archivo    
-            except:
+            except FileNotFoundError:
                 
                 #lo abrimos en modo de escritura
                 with open("data.json", "w") as file:
