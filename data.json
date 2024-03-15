@@ -1,10 +1,18 @@
 {
-      "amazon": {
-            "email": "rira@gmail.com",
-            "password": "erhviw"
-      },
       "facebook": {
-            "email": "rira@gmail.com",
-            "password": "hmiks"
+            "email": "example@gmail.com",
+            "password": "qeqe"
+      },
+      "hotmail": {
+            "email": "example@gmail.com",
+            "password": "tete"
+      },
+      "ebay": {
+            "email": "example@gmail.com",
+            "password": "pT*t7*Dj2#liIqq"
+      },
+      "amazon": {
+            "email": "example@gmail.com",
+            "password": "Bo9QII00Q&GXo+F5"
       }
 }
