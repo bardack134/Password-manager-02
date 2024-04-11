@@ -20,7 +20,7 @@ This project is a simple password manager that allows users to securely store th
 - **encrypt.py**: Python file containing the `encrypt` function for encrypting passwords.
 
 ## Results and Achievements:
-This project allowed me to integrate various Python skills, including GUI design with Tkinter, working with HTTP requests using Requests, and data encryption. I successfully implemented features such as generating random passwords, securely storing website credentials, and retrieving passwords when needed. The project enhanced my understanding of Python libraries and modules and provided hands-on experience in building a practical application.
+This project allowed me to integrate various Python skills, including GUI design with Tkinter, working with HTTP requests using Requests, and data encryption. I successfully implemented features such as generating random passwords, securely storing website credentials, and retrieving passwords when needed. The project enhanced my understanding of Python libraries and modules and provided hands-on experience in building a practical application.Passwords are securely stored in a JSON file format for easy retrieval and management
 
 
 ## Images:
